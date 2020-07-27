@@ -1,0 +1,21 @@
+body {
+  min-height: 100vh;
+  font-size: 1rem;
+  line-height: 1.25em;
+  -webkit-font-smoothing: antialiased;
+  -webkit-backface-visibility: hidden;
+  background: $primary;
+  color: $white;
+}
+
+#app {
+  position: relative;
+  flex-direction: column;
+}
+
+#__nuxt, #__layout, #app {
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+  overflow: hidden;
+}

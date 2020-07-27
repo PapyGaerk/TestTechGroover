@@ -13,7 +13,7 @@ export default {
      * @returns {Promise<AxiosResponse<T>>}
      */
     async getPokemons(limit, offset = false) {
-        return apiClient.get(`pokemon?limit=${limit}`);
+        return apiClient.get(`pokemon?limit=${limit}&offset=${offset}`);
     },
     /**
      * Remonte un pokemon
