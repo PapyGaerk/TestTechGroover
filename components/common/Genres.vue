@@ -2,7 +2,7 @@
     <section id="genres">
         <div class="wrapper">
             <ul ref="genres">
-                <li :class="{active: sortedGenre === genre.name}" @click="setActives(genre.name)" v-for="genre in genres" v-html="genre.name"/>
+                <li :class="{active: sortedGenre === genre.id}" @click="setActives(genre.id)" v-for="genre in genres" v-html="genre.name"/>
             </ul>
         </div>
     </section>
@@ -15,7 +15,9 @@
         name: "Genres",
         methods: {
             setActives(genre) {
-                this.$store.commit('films/SET_SORTED_GENRE', genre);
+                this.$store.commit('films/SET_SORTED_GENRE', this.sortedGenre !== genre ? genre : '');
+                this.$store.commit('films/RESET_PAGE');
+                this.$store.dispatch('films/fetchFilms');
             }
         },
         computed: {

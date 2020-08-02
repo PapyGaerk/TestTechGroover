@@ -1,10 +1,11 @@
 <template>
     <main id="home">
         <Search/>
+        <Years/>
         <Genres/>
         <section id="films">
             <div class="wrapper" ref="films">
-                <ul>
+                <ul v-if="films.length > 0">
                     <li :key="film.id" :style="`background-image: url('${getImgUrl({name: film.backdrop_path, imageSize: 0})}')`" @mouseenter="hover($event, 'in')" @mouseleave="hover($event, 'out')" class="film" v-for="film in films">
                         <div class="filter"/>
                         <div class="left">
@@ -12,10 +13,11 @@
                         </div>
                         <div class="right">
                             <p class="title" v-html="film.title"/>
-                            <p class="date" v-html="film.release_date"/>
+                            <p class="date" v-html="getDate(film.release_date)"/>
                         </div>
                     </li>
                 </ul>
+                <p v-else>Malheureusement, aucun film n'est trouvé</p>
                 <!--                <Loader v-if="pokemonLoading === true"/>-->
             </div>
         </section>
@@ -29,10 +31,12 @@
     import {gsap} from 'gsap';
     import {imgOptions} from "../mixins/generalMixin";
     import Genres from "../components/common/Genres";
+    import Years from "../components/common/Years";
+    import moment from 'moment'
 
     export default {
         name: 'index',
-        components: {Genres, Search, Loader},
+        components: {Years, Genres, Search, Loader},
         mixins: [imgOptions],
         asyncData({store}) {
             return store.dispatch('films/fetchFilms');
@@ -95,6 +99,9 @@
                             opacity: 0
                         }, "-=.3")
                 }
+            },
+            getDate(date) {
+                return moment(date).format('LL')
             }
         },
         beforeDestroy() {
