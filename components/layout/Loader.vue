@@ -1,6 +1,6 @@
 <template>
     <div class="loader">
-        <img :src="require('@/assets/img/pokeball.png')" alt="Loader">
+
     </div>
 </template>
 

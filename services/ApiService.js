@@ -1,43 +1,42 @@
 import axios from 'axios';
 
-const apiUrl = 'https://pokeapi.co/api/v2/',
+const apiUrl = 'https://api.themoviedb.org/3/',
+    apiKey = '?api_key=0931480d08dd4234d51d7c56978c3ded&language=fr&region=FR',
     apiClient = axios.create({
         baseURL: apiUrl
     });
 
+const call = (endpoint, parameters = {}) => {
+    let url = apiUrl + endpoint + apiKey;
+    if (Object.values(parameters).length !== 0) {
+        url += '&' + Object.keys(parameters).map((name) => name + '=' + parameters[name]).join('&');
+    }
+
+    // console.log(url);
+    return apiClient.get(url);
+};
+
 export default {
-    /**
-     * Remonte tout les pokemons
-     * @param {Number} limit - La limite maximum d'élément à retourner
-     * @param {Number|Boolean} offset - A partir de quel pokemon on doit se limiter
-     * @returns {Promise<AxiosResponse<T>>}
-     */
-    async getPokemons(limit, offset = false) {
-        return apiClient.get(`pokemon?limit=${limit}&offset=${offset}`);
+    getFilms(page) {
+        return call('discover/movie', {
+            'sort_by': 'vote_count.desc',
+            'include_adult': false,
+            'include_video': false,
+            'page': page
+        });
     },
-    /**
-     * Remonte un pokemon
-     * @param {Number|Boolean} pokemonID - L'ID du Pokemon
-     * @param {String|Boolean} url - L'url direct du Pokemon
-     * @returns {Promise<AxiosResponse<T>>}
-     */
-    getPokemon(pokemonID, url = false) {
-        return apiClient.get(url ? url : `pokemon/${pokemonID}`)
+    getFilm(search) {
+        if (search) {
+            return call('search/movie', {
+                'include_adult': false,
+                'page': 1,
+                'query': search
+            });
+        } else {
+            return []
+        }
     },
-
-    /**
-     * Remonte les types des pokemons
-     * @returns {Promise<AxiosResponse<T>>}
-     */
-    getTypes() {
-        return apiClient.get(`type`);
-    },
-
-    /**
-     * Remonte les natures des pokemons
-     * @returns {Promise<AxiosResponse<T>>}
-     */
-    getNatures() {
-        return apiClient.get(`nature`);
+    getGenres() {
+        return call('genre/movie/list');
     }
 }
