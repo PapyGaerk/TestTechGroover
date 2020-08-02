@@ -12,18 +12,38 @@ const call = (endpoint, parameters = {}) => {
         url += '&' + Object.keys(parameters).map((name) => name + '=' + parameters[name]).join('&');
     }
 
-    // console.log(url);
     return apiClient.get(url);
 };
 
 export default {
-    getFilms(page) {
-        return call('discover/movie', {
+    /**
+     *
+     * @param params
+     * @return {Promise<AxiosResponse<T>>}
+     */
+    getFilms(params) {
+        const {
+            page = 1,
+            genre,
+            year
+        } = params;
+
+        let paramsCall = {
             'sort_by': 'vote_count.desc',
             'include_adult': false,
             'include_video': false,
             'page': page
-        });
+        };
+
+        if (genre) {
+            paramsCall['with_genres'] = genre;
+        }
+
+        if (year) {
+            paramsCall['primary_release_year'] = year;
+        }
+
+        return call('discover/movie', paramsCall);
     },
     getFilm(search) {
         if (search) {

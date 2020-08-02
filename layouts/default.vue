@@ -4,13 +4,14 @@
 
 <script>
     import {mapState} from 'vuex'
+    import 'moment/locale/fr';
 
     export default {
         beforeCreate() {
             this.$store.dispatch('films/fetchGenres');
         },
         beforeMount() {
-            this.isWebpSupported()
+            this.isWebpSupported();
         },
         methods: {
             async isWebpSupported() {
