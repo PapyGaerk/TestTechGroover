@@ -1,62 +1,43 @@
 <template>
-  <div>
-    <Nuxt />
-  </div>
+    <Nuxt v-if="!isLoading"/>
 </template>
 
-<style>
-html {
-  font-family:
-    'Source Sans Pro',
-    -apple-system,
-    BlinkMacSystemFont,
-    'Segoe UI',
-    Roboto,
-    'Helvetica Neue',
-    Arial,
-    sans-serif;
-  font-size: 16px;
-  word-spacing: 1px;
-  -ms-text-size-adjust: 100%;
-  -webkit-text-size-adjust: 100%;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-font-smoothing: antialiased;
-  box-sizing: border-box;
-}
+<script>
+    import {mapState} from 'vuex'
 
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-  margin: 0;
-}
-
-.button--green {
-  display: inline-block;
-  border-radius: 4px;
-  border: 1px solid #3b8070;
-  color: #3b8070;
-  text-decoration: none;
-  padding: 10px 30px;
-}
-
-.button--green:hover {
-  color: #fff;
-  background-color: #3b8070;
-}
-
-.button--grey {
-  display: inline-block;
-  border-radius: 4px;
-  border: 1px solid #35495e;
-  color: #35495e;
-  text-decoration: none;
-  padding: 10px 30px;
-  margin-left: 15px;
-}
-
-.button--grey:hover {
-  color: #fff;
-  background-color: #35495e;
-}
-</style>
+    export default {
+        beforeCreate() {
+            this.$store.dispatch('films/fetchGenres');
+        },
+        beforeMount() {
+            this.isWebpSupported()
+        },
+        methods: {
+            async isWebpSupported() {
+                // https://developers.google.com/speed/webp/faq
+                const feature = 'lossy',
+                    kTestImages = {
+                        lossy: 'UklGRiIAAABXRUJQVlA4IBYAAAAwAQCdASoBAAEADsD+JaQAA3AAAAAA',
+                        lossless: 'UklGRhoAAABXRUJQVlA4TA0AAAAvAAAAEAcQERGIiP4HAA==',
+                        alpha: 'UklGRkoAAABXRUJQVlA4WAoAAAAQAAAAAAAAAAAAQUxQSAwAAAARBxAR/Q9ERP8DAABWUDggGAAAABQBAJ0BKgEAAQAAAP4AAA3AAP7mtQAAAA==',
+                        animation: 'UklGRlIAAABXRUJQVlA4WAoAAAASAAAAAAAAAAAAQU5JTQYAAAD/////AABBTk1GJgAAAAAAAAAAAAAAAAAAAGQAAABWUDhMDQAAAC8AAAAQBxAREYiI/gcA'
+                    },
+                    img = new Image();
+                img.onload = () => {
+                    this.$store.commit('general/IS_WEBP_SUPPORTED', true);
+                    this.$store.commit('general/IS_LOADING', false)
+                };
+                img.onerror = () => {
+                    this.$store.commit('general/IS_WEBP_SUPPORTED', false);
+                    this.$store.commit('general/IS_LOADING', false)
+                };
+                img.src = 'data:image/webp;base64,' + kTestImages[feature]
+            }
+        },
+        computed: {
+            ...mapState({
+                isLoading: (state) => state.general.isLoading
+            })
+        }
+    }
+</script>
