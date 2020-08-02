@@ -1,8 +1,8 @@
 <template>
     <main id="home">
         <Search/>
-        <Years/>
-        <Genres/>
+        <Sort name="years"/>
+        <Sort name="types"/>
         <section id="films">
             <div class="wrapper" ref="films">
                 <ul v-if="films.length > 0">
@@ -33,10 +33,11 @@
     import Genres from "../components/common/Genres";
     import Years from "../components/common/Years";
     import moment from 'moment'
+    import Sort from "../components/common/Sort";
 
     export default {
         name: 'index',
-        components: {Years, Genres, Search, Loader},
+        components: {Sort, Years, Genres, Search, Loader},
         mixins: [imgOptions],
         asyncData({store}) {
             return store.dispatch('films/fetchFilms');
@@ -108,7 +109,8 @@
             window.removeEventListener('scroll', this.loadMoreFilms)
         },
         computed: mapState({
-            films: state => state.films.films
+            films: state => state.films.films,
+            genres: state => state.films.genres
         })
 
     }

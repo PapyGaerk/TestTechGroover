@@ -2,7 +2,7 @@
     <section id="years">
         <div class="wrapper">
             <ul>
-                <li :class="{active: sortedYear === dates.start + i}" :key="i" @click="setActives(dates.start + i)" v-for="i in (dates.end - dates.start)" v-html="dates.start + i"/>
+                <li :class="{active: sortedYear === dates.end - i}" :key="i" @click="setActives(dates.end - i)" v-for="i in (dates.end - dates.start)" v-html="dates.end - i"/>
             </ul>
         </div>
     </section>
@@ -17,7 +17,7 @@
             return {
                 dates: {
                     start: 1960,
-                    end: moment().year()
+                    end: moment().add(1, 'y').year()
                 }
             };
         },
