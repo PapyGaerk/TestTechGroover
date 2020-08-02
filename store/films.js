@@ -1,9 +1,12 @@
 import apiService from '@/services/ApiService.js';
+import moment from 'moment'
 
 export const state = () => ({
     films: [],
+    filmsStocked: [],
     filmsSearched: [],
     page: 1,
+    pageStocked: 1,
     pageIncrement: 1,
     genres: [],
     sortedGenre: '',
@@ -13,6 +16,34 @@ export const state = () => ({
 export const mutations = {
     SET_FILMS(state, films) {
         state.films = (state.page - 1) === 1 ? films : state.films.concat(films);
+        if (!state.sortedGenre && !state.sortedYear) {
+            state.filmsStocked = state.films;
+            state.pageStocked = state.page;
+        }
+    },
+    SORT_FILMS(state) {
+        state.films = state.filmsStocked.filter((film) => {
+            const isGenre = film.genre_ids.includes(state.sortedGenre),
+                isYear = moment(film.release_date).format('YYYY') === state.sortedYear.toString();
+
+            if (state.sortedGenre && !state.sortedYear) {
+                return isGenre;
+            } else if (!state.sortedGenre && state.sortedYear) {
+                return isYear;
+            } else if (state.sortedGenre && state.sortedYear) {
+                return isGenre && isYear;
+            } else if (!state.sortedGenre && !state.sortedYear) {
+                return true
+            }
+        });
+
+        if (!state.sortedGenre && !state.sortedYear) {
+            state.page = state.pageStocked;
+        }
+
+        if (state.films.length < 5) {
+            this.dispatch('films/fetchFilms')
+        }
     },
     SET_FILMS_SEARCHED(state, films) {
         state.filmsSearched = films;
