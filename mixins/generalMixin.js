@@ -5,7 +5,7 @@ export const imgOptions = {
          * @param {Object}   params
          * @param {String}   params.name - Le nom de l'image
          * @param {String}  [params.path] - Le chemin de l'image, si celui-ci diffère du chemin de base de tmdb
-         * @param {Number} [params.imageSize] - L'ID de la taille de l'image
+         * @param {Number}  [params.imageSize] - L'ID de la taille de l'image
          * @return {String} - Retourne l'url de l'image
          */
         getImgUrl(params) {

@@ -17,8 +17,12 @@ const call = (endpoint, parameters = {}) => {
 
 export default {
     /**
-     *
-     * @param params
+     * Permet de récupérer les films
+     * https://developers.themoviedb.org/3/discover/movie-discover
+     * @param  params
+     * @param {Number}  params.page - La page, permetant de récupérer de nouveaux résultats
+     * @param {String} [params.genre] - Le genre souhaité
+     * @param {String} [params.year] - L'année souhaitée
      * @return {Promise<AxiosResponse<T>>}
      */
     getFilms(params) {
@@ -45,6 +49,12 @@ export default {
 
         return call('discover/movie', paramsCall);
     },
+    /**
+     * Permet de chercher des films
+     * https://developers.themoviedb.org/3/search/search-companies
+     * @param {String} search - Le mot recherché
+     * @return {Promise<AxiosResponse<T>>|Array}
+     */
     getFilm(search) {
         if (search) {
             return call('search/movie', {
@@ -56,6 +66,11 @@ export default {
             return []
         }
     },
+    /**
+     * Permet de récupérer tout les genres
+     * https://developers.themoviedb.org/3/genres/get-movie-list
+     * @return {Promise<AxiosResponse<T>>}
+     */
     getGenres() {
         return call('genre/movie/list');
     }

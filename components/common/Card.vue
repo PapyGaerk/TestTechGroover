@@ -2,7 +2,7 @@
     <li :style="`background-image: url('${getImgUrl({name: film.backdrop_path, imageSize: 0})}')`" @mouseenter="hover($event, 'in')" @mouseleave="hover($event, 'out')" class="film">
         <div class="filter"/>
         <div class="left">
-            <img :alt="film.title" :src="`${getImgUrl({name: film.poster_path, imageSize: 1})}`">
+            <img :alt="film.title" :src="`${getImgUrl({name: film.poster_path, imageSize: 1})}`"/>
         </div>
         <div class="right">
             <p class="title" v-html="film.title"/>
@@ -25,6 +25,7 @@
             }
         },
         mounted() {
+            // On créer notre anim
             this.anim = gsap.timeline({paused: true})
                 .to(this.$el.querySelector('.filter'), .6, {
                     x: 0
@@ -51,6 +52,11 @@
             }
         },
         methods: {
+            /**
+             * Permet de jouer l'animation en fonction du hover
+             * @param {Object} e
+             * @param {String} type - Le type de hover (in | out)
+             */
             hover(e, type) {
                 if (type === 'in') {
                     this.anim.play()
@@ -58,6 +64,12 @@
                     this.anim.reverse()
                 }
             },
+            /**
+             * Permet de retourner la date formaté
+             * https://momentjs.com/docs/#/parsing/string-format/
+             * @param {String} date - La date
+             * @return {string} - La date formatée
+             */
             getDate(date) {
                 return moment(date).format('LL')
             }

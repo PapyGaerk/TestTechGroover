@@ -14,6 +14,11 @@
             this.isWebpSupported();
         },
         methods: {
+            /**
+             * TODO: Inutile, je l'avais juste mis la pour savoir si le package fonctionnait avec les appels
+             * venant d'une api. Malheureusement non.
+             * @return {Promise<void>}
+             */
             async isWebpSupported() {
                 // https://developers.google.com/speed/webp/faq
                 const feature = 'lossy',
