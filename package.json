@@ -8,7 +8,8 @@
     "build": "nuxt build",
     "start": "nuxt start",
     "export": "nuxt export",
-    "serve": "nuxt serve"
+    "serve": "nuxt serve",
+    "test": "jest"
   },
   "dependencies": {
     "@nuxtjs/axios": "^5.12.0",
@@ -23,6 +24,11 @@
   },
   "devDependencies": {
     "@aceforth/nuxt-optimized-images": "^1.1.0",
-    "imagemin-mozjpeg": "^9.0.0"
+    "@vue/test-utils": "^1.0.3",
+    "babel-core": "7.0.0-bridge.0",
+    "babel-jest": "^26.2.2",
+    "imagemin-mozjpeg": "^9.0.0",
+    "jest": "^26.2.2",
+    "vue-jest": "^3.0.6"
   }
 }
