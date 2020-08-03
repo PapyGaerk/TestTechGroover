@@ -14,14 +14,17 @@ export const state = () => ({
 });
 
 export const mutations = {
+    // On stock
     SET_FILMS(state, films) {
-        state.films = (state.page - 1) === 1 ? films : state.films.concat(films);
-        if (!state.sortedGenre && !state.sortedYear) {
-            state.filmsStocked = state.films;
-            state.pageStocked = state.page;
+        state.films = (state.page - 1) === 1 ? films : state.films.concat(films); // Si on est page une, on écrase; sinon on ajoute
+        if (!state.sortedGenre && !state.sortedYear) { // Si il n'y a aucun film
+            state.filmsStocked = state.films; // On save les films
+            state.pageStocked = state.page; // On save la page
         }
     },
+    // On tri
     SORT_FILMS(state) {
+        // On regarde dans nos films stocké suivant le(s) filtre(s)
         state.films = state.filmsStocked.filter((film) => {
             const isGenre = film.genre_ids.includes(state.sortedGenre),
                 isYear = moment(film.release_date).format('YYYY') === state.sortedYear.toString();
@@ -37,12 +40,12 @@ export const mutations = {
             }
         });
 
-        if (!state.sortedGenre && !state.sortedYear) {
-            state.page = state.pageStocked;
+        if (!state.sortedGenre && !state.sortedYear) { // Si on a enlever les filtres
+            state.page = state.pageStocked; // On récupère notre page d'origine
         }
 
-        if (state.films.length < 5) {
-            this.dispatch('films/fetchFilms')
+        if (state.films.length < 5) { // Si on a pas assez de films
+            this.dispatch('films/fetchFilms') // On lance un nouvel appel api
         }
     },
     SET_FILMS_SEARCHED(state, films) {

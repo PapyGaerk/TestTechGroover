@@ -3,8 +3,8 @@
         <div class="wrapper">
             <form>
                 <div class="form-group">
-                    <label for="film-search">Rechercher</label>
-                    <input id="film-search" name="film-search" type="text" v-model="filmSearch" autocomplete="off">
+                    <label for="film-search" v-html="`Rechercher`"/>
+                    <input autocomplete="off" id="film-search" name="film-search" type="text" v-model="filmSearch">
                 </div>
             </form>
             <div id="search-results" v-if="searchWord">
@@ -28,11 +28,6 @@
     export default {
         name: "Search",
         mixins: [imgOptions],
-        methods: {
-            submit() {
-                console.log('submit')
-            }
-        },
         computed: {
             ...mapState({
                 filmsSearched: state => state.films.filmsSearched,

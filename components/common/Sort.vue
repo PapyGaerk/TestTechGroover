@@ -34,18 +34,20 @@
             }
         },
         methods: {
+            /**
+             * Permet de trier nos éléments
+             * @param {String} val - Le tri
+             */
             sort(val) {
+                // On store le tri
                 if (this.name === 'types') {
                     this.$store.commit('films/SET_SORTED_GENRE', this.sortedGenre !== val ? val : '');
                 } else if (this.name === 'years') {
                     this.$store.commit('films/SET_SORTED_YEAR', this.sortedYear !== val ? val : '');
                 }
 
-                this.$store.commit('films/RESET_PAGE');
-                this.$store.commit('films/SORT_FILMS');
-            },
-            test(test) {
-                console.log(test)
+                this.$store.commit('films/RESET_PAGE'); // On remet les pages a zéro
+                this.$store.commit('films/SORT_FILMS'); // On lance le tri
             }
         },
         computed: {

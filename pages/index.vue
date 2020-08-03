@@ -19,14 +19,12 @@
     import {mapState} from 'vuex'
     import Loader from '../components/layout/Loader.vue'
     import Search from "../components/common/Search";
-    import Genres from "../components/common/Genres";
-    import Years from "../components/common/Years";
     import Sort from "../components/common/Sort";
     import Card from "../components/common/Card";
 
     export default {
         name: 'index',
-        components: {Card, Sort, Years, Genres, Search, Loader},
+        components: {Card, Sort, Search, Loader},
         asyncData({store}) {
             return store.dispatch('films/fetchFilms');
         },
@@ -39,13 +37,16 @@
             window.addEventListener('scroll', this.loadMoreFilms);
         },
         methods: {
+            /**
+             * Permet de charger plus de films au scroll
+             */
             loadMoreFilms() {
-                const filmsRect = this.$refs.films.querySelector('ul .film:last-child').getBoundingClientRect();
+                const filmsRect = this.$refs.films.querySelector('ul .film:last-child').getBoundingClientRect(); // On récupère les infos du dernier éléments
 
-                if (filmsRect.top >= 0 && filmsRect.bottom - filmsRect.height <= window.innerHeight) {
+                if (filmsRect.top >= 0 && filmsRect.bottom - filmsRect.height <= window.innerHeight) { // Si il rentre dans le viewport
                     if (this.inViewport !== true) {
-                        this.inViewport = true;
-                        this.$store.dispatch('films/fetchFilms');
+                        this.inViewport = true; // On set une variable pour éviter de multiples appels
+                        this.$store.dispatch('films/fetchFilms'); // On fait un appel API
                     }
                 } else {
                     this.inViewport = false;
